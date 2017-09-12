@@ -4,7 +4,9 @@
              x:Class="XrnCourse.LocalFiles.Pages.MainPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin Forms!" />
+            <Button Text="Read embedded file" Command="{Binding OpenEmbeddedFilePageCommand}"></Button>
+            <Button Text="Save and Load a file" Command="{Binding OpenSaveAndLoadPageCommand}"></Button>
+            <Button Text="Save settings with PCL Storage" Command="{Binding OpenPluginPageCommand}"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

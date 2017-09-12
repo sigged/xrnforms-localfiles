@@ -1,0 +1,14 @@
+﻿Open;Openen;Ouvrir
+Close;Sluiten;Fermer
+Save;Bewaren;Sauvegarder
+Delete;Verwijderen;Effacer
+Sort;Sorteren,Trier
+Filter;Filteren;Filtrer
+Enable;Activeren;Activer
+Open;Openen;Ouvrir
+Close;Sluiten;Fermer
+Save;Bewaren;Sauvegarder
+Delete;Verwijderen;Effacer
+Sort;Sorteren,Trier
+Filter;Filteren;Filtrer
+Enable;Activeren;Activer

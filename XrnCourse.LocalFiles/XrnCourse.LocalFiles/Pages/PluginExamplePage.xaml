@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:XrnCourse.LocalFiles.Converters"
+             x:Class="XrnCourse.LocalFiles.Pages.PluginExamplePage"
+             Title="PCL Storage Plugin">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:MilkAmountToStringConverter x:Key="MilkToString" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <TableView HasUnevenRows="True">
+                <TableSection Title="Configure your coffee">
+                    <EntryCell Label="Name your coffee:" Text="{Binding CoffeeName}" />
+                    <SwitchCell Text="Sugar" On="{Binding HasSugar}"  />
+                    <ViewCell>
+                        <StackLayout Padding="15">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Amount of milk" />
+                                <Label Text="{Binding MilkAmount, Converter={StaticResource MilkToString}}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" />
+                            </StackLayout>
+                            <Slider Value="{Binding MilkAmount}" Maximum="4" Minimum="0"></Slider>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout Padding="15">
+                            <Label Text="Make coffee every day at" />
+                            <TimePicker Time="{Binding BrewTime}" />
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+            </TableView>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Reset" Command="{Binding ResetToDefaultsCommand}"></Button>
+                <Button Text="Apply" Command="{Binding SaveSettingsCommand}"></Button>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
