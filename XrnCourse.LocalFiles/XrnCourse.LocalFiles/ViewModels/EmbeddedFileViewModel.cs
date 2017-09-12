@@ -27,9 +27,15 @@ namespace XrnCourse.LocalFiles.ViewModels
 
         public ICommand LoadFileCommand => new Command(
             () => {
-                
+                var assembly = typeof(EmbeddedFileViewModel).GetTypeInfo().Assembly;
+                Stream stream = assembly.GetManifestResourceStream("XrnCourse.LocalFiles.EmbeddedFiles.translations.txt");
+                using (var reader = new StreamReader(stream))
+                {
+                    FileContents = reader.ReadToEnd();
+                }
             }
         );
+
 
     }
 }
