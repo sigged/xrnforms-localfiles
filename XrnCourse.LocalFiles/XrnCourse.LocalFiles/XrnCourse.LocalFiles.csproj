@@ -53,6 +53,7 @@
       <DependentUpon>SaveAndLoadPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ITextfileService.cs" />
     <Compile Include="ViewModels\EmbeddedFileViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PluginExampleViewModel.cs" />

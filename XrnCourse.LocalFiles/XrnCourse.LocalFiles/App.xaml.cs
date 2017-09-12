@@ -1,5 +1,6 @@
 ﻿using FreshMvvm;
 using Xamarin.Forms;
+using XrnCourse.LocalFiles.Services;
 using XrnCourse.LocalFiles.ViewModels;
 
 namespace XrnCourse.LocalFiles
@@ -9,7 +10,10 @@ namespace XrnCourse.LocalFiles
         public App()
         {
             InitializeComponent();
-            
+
+            //register dependencies
+            FreshIOC.Container.Register<ITextfileService>(DependencyService.Get<ITextfileService>());
+
             MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<MainViewModel>());
         }
 
