@@ -1,6 +1,11 @@
 ﻿using FreshMvvm;
+using PCLStorage;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Input;
+using System.Xml;
+using System.Xml.Serialization;
 using Xamarin.Forms;
 using XrnCourse.LocalFiles.Domain;
 
@@ -8,8 +13,6 @@ namespace XrnCourse.LocalFiles.ViewModels
 {
     public class PluginExampleViewModel : FreshBasePageModel
     {
-        public CoffeeSettings CurrentSettings { get; set; }
-
         
         private string coffeeName;
         public string CoffeeName
@@ -55,11 +58,36 @@ namespace XrnCourse.LocalFiles.ViewModels
             }
         }
 
-        protected override void ViewIsAppearing(object sender, EventArgs e)
+        protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
             base.ViewIsAppearing(sender, e);
 
-            //todo: load settings from XML
+            //load settings from XML
+            string fileName = "settings.xml";
+            IFolder folder = FileSystem.Current.LocalStorage;
+            ExistenceCheckResult result = await folder.CheckExistsAsync(fileName);
+            if (result == ExistenceCheckResult.FileExists)
+            {
+                try
+                {
+                    IFile file = await folder.GetFileAsync("settings.xml");
+                    string text = await file.ReadAllTextAsync();
+                    using (var reader = new StringReader(text))
+                    {
+                        var serializer = new XmlSerializer(typeof(CoffeeSettings));
+                        CoffeeSettings settings = (CoffeeSettings)serializer.Deserialize(reader);
+
+                        this.CoffeeName = settings.CoffeeName;
+                        this.HasSugar = settings.HasSugar;
+                        this.MilkAmount = settings.MilkAmount;
+                        this.BrewTime = settings.BrewTime;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine($"Error reading settings: {ex.Message}");
+                }
+            }
         }
 
 
@@ -73,15 +101,28 @@ namespace XrnCourse.LocalFiles.ViewModels
         );
 
         public ICommand SaveSettingsCommand => new Command(
-            () => {
-                var settings = new CoffeeSettings{
+            async () => {
+                var settings = new CoffeeSettings
+                {
                     CoffeeName = this.CoffeeName,
                     HasSugar = this.HasSugar,
                     MilkAmount = this.milkAmount,
                     BrewTime = this.BrewTime
                 };
 
-                //todo: save to XML file here!
+                //saving settings to XML file
+                var serializer = new XmlSerializer(typeof(CoffeeSettings));
+                string settingsAsXml = "";
+                using (var stringWriter = new StringWriter())
+                using (var writer = XmlWriter.Create(stringWriter))
+                {
+                    serializer.Serialize(writer, settings);
+                    settingsAsXml = stringWriter.ToString();
+                }
+
+                IFolder folder = FileSystem.Current.LocalStorage;
+                IFile file = await folder.CreateFileAsync("settings.xml", CreationCollisionOption.ReplaceExisting);
+                await file.WriteAllTextAsync(settingsAsXml);
             }
         );
 
