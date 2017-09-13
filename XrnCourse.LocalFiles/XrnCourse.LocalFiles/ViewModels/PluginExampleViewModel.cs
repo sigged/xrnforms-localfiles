@@ -58,37 +58,37 @@ namespace XrnCourse.LocalFiles.ViewModels
             }
         }
 
-protected async override void ViewIsAppearing(object sender, EventArgs e)
-{
-    base.ViewIsAppearing(sender, e);
-
-    //load settings from XML
-    string fileName = "settings.xml";
-    IFolder folder = FileSystem.Current.LocalStorage;
-    ExistenceCheckResult result = await folder.CheckExistsAsync(fileName);
-    if (result == ExistenceCheckResult.FileExists)
-    {
-        try
+        protected async override void ViewIsAppearing(object sender, EventArgs e)
         {
-            IFile file = await folder.GetFileAsync(fileName);
-            string text = await file.ReadAllTextAsync();
-            using (var reader = new StringReader(text))
-            {
-                var serializer = new XmlSerializer(typeof(CoffeeSettings));
-                CoffeeSettings settings = (CoffeeSettings)serializer.Deserialize(reader);
+            base.ViewIsAppearing(sender, e);
 
-                this.CoffeeName = settings.CoffeeName;
-                this.HasSugar = settings.HasSugar;
-                this.MilkAmount = settings.MilkAmount;
-                this.BrewTime = settings.BrewTime;
+            //load settings from XML
+            string fileName = "settings.xml";
+            IFolder folder = FileSystem.Current.LocalStorage;
+            ExistenceCheckResult result = await folder.CheckExistsAsync(fileName);
+            if (result == ExistenceCheckResult.FileExists)
+            {
+                try
+                {
+                    IFile file = await folder.GetFileAsync(fileName);
+                    string text = await file.ReadAllTextAsync();
+                    using (var reader = new StringReader(text))
+                    {
+                        var serializer = new XmlSerializer(typeof(CoffeeSettings));
+                        CoffeeSettings settings = (CoffeeSettings)serializer.Deserialize(reader);
+
+                        this.CoffeeName = settings.CoffeeName;
+                        this.HasSugar = settings.HasSugar;
+                        this.MilkAmount = settings.MilkAmount;
+                        this.BrewTime = settings.BrewTime;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine($"Error reading settings: {ex.Message}");
+                }
             }
         }
-        catch(Exception ex)
-        {
-            Debug.WriteLine($"Error reading settings: {ex.Message}");
-        }
-    }
-}
 
 
         public ICommand ResetToDefaultsCommand => new Command(
