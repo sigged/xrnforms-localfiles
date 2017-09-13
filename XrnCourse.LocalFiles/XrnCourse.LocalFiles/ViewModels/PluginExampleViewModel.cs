@@ -58,37 +58,37 @@ namespace XrnCourse.LocalFiles.ViewModels
             }
         }
 
-        protected async override void ViewIsAppearing(object sender, EventArgs e)
+protected async override void ViewIsAppearing(object sender, EventArgs e)
+{
+    base.ViewIsAppearing(sender, e);
+
+    //load settings from XML
+    string fileName = "settings.xml";
+    IFolder folder = FileSystem.Current.LocalStorage;
+    ExistenceCheckResult result = await folder.CheckExistsAsync(fileName);
+    if (result == ExistenceCheckResult.FileExists)
+    {
+        try
         {
-            base.ViewIsAppearing(sender, e);
-
-            //load settings from XML
-            string fileName = "settings.xml";
-            IFolder folder = FileSystem.Current.LocalStorage;
-            ExistenceCheckResult result = await folder.CheckExistsAsync(fileName);
-            if (result == ExistenceCheckResult.FileExists)
+            IFile file = await folder.GetFileAsync(fileName);
+            string text = await file.ReadAllTextAsync();
+            using (var reader = new StringReader(text))
             {
-                try
-                {
-                    IFile file = await folder.GetFileAsync("settings.xml");
-                    string text = await file.ReadAllTextAsync();
-                    using (var reader = new StringReader(text))
-                    {
-                        var serializer = new XmlSerializer(typeof(CoffeeSettings));
-                        CoffeeSettings settings = (CoffeeSettings)serializer.Deserialize(reader);
+                var serializer = new XmlSerializer(typeof(CoffeeSettings));
+                CoffeeSettings settings = (CoffeeSettings)serializer.Deserialize(reader);
 
-                        this.CoffeeName = settings.CoffeeName;
-                        this.HasSugar = settings.HasSugar;
-                        this.MilkAmount = settings.MilkAmount;
-                        this.BrewTime = settings.BrewTime;
-                    }
-                }
-                catch(Exception ex)
-                {
-                    Debug.WriteLine($"Error reading settings: {ex.Message}");
-                }
+                this.CoffeeName = settings.CoffeeName;
+                this.HasSugar = settings.HasSugar;
+                this.MilkAmount = settings.MilkAmount;
+                this.BrewTime = settings.BrewTime;
             }
         }
+        catch(Exception ex)
+        {
+            Debug.WriteLine($"Error reading settings: {ex.Message}");
+        }
+    }
+}
 
 
         public ICommand ResetToDefaultsCommand => new Command(
@@ -109,19 +109,20 @@ namespace XrnCourse.LocalFiles.ViewModels
                     MilkAmount = this.milkAmount,
                     BrewTime = this.BrewTime
                 };
-
+                
                 //saving settings to XML file
                 var serializer = new XmlSerializer(typeof(CoffeeSettings));
                 string settingsAsXml = "";
                 using (var stringWriter = new StringWriter())
-                using (var writer = XmlWriter.Create(stringWriter))
-                {
-                    serializer.Serialize(writer, settings);
-                    settingsAsXml = stringWriter.ToString();
-                }
+                    using (var writer = XmlWriter.Create(stringWriter))
+                    {
+                        serializer.Serialize(writer, settings);
+                        settingsAsXml = stringWriter.ToString();
+                    }
 
                 IFolder folder = FileSystem.Current.LocalStorage;
-                IFile file = await folder.CreateFileAsync("settings.xml", CreationCollisionOption.ReplaceExisting);
+                IFile file = await folder.CreateFileAsync("settings.xml", 
+                    CreationCollisionOption.ReplaceExisting);
                 await file.WriteAllTextAsync(settingsAsXml);
             }
         );
