@@ -20,6 +20,9 @@ namespace XrnCourse.LocalFiles.UWP.Services
         public async Task<string> LoadText(string filename)
         {
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            if (await storageFolder.TryGetItemAsync(filename) == null)
+                return null;
+
             StorageFile sampleFile = await storageFolder.GetFileAsync(filename);
             string text = await FileIO.ReadTextAsync(sampleFile);
             return text;
