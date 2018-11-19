@@ -12,7 +12,7 @@ namespace XrnCourse.LocalFiles
             InitializeComponent();
 
             //register dependencies
-            FreshIOC.Container.Register<ITextfileService>(DependencyService.Get<ITextfileService>());
+            FreshIOC.Container.Register(DependencyService.Get<ITextfileService>());
 
             MainPage = new FreshNavigationContainer(FreshPageModelResolver.ResolvePageModel<MainViewModel>());
         }

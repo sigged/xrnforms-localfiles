@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace XrnCourse.LocalFiles.Converters
@@ -29,8 +25,8 @@ namespace XrnCourse.LocalFiles.Converters
                 }
                 return $"{value} years old";
             }
-            else
-                throw new ArgumentException("value must be of type 'int'", "value");
+
+            throw new ArgumentException("value must be of type 'int'", nameof(value));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

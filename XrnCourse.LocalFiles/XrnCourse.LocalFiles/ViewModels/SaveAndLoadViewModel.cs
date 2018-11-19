@@ -7,22 +7,22 @@ namespace XrnCourse.LocalFiles.ViewModels
 {
     public class SaveAndLoadViewModel : FreshBasePageModel
     {
-        private ITextfileService fileService;
+        private readonly ITextfileService _fileService;
 
         public SaveAndLoadViewModel(ITextfileService fileservice)
         {
-            fileService = fileservice;
+            _fileService = fileservice;
         }
 
-        private string fileContents;
+        private string _fileContents;
 
         public string FileContents
         {
-            get { return fileContents; }
+            get => _fileContents;
             set
             {
-                fileContents = value;
-                this.RaisePropertyChanged(nameof(FileContents));
+                _fileContents = value;
+                RaisePropertyChanged(nameof(FileContents));
             }
         }
 
@@ -34,13 +34,13 @@ namespace XrnCourse.LocalFiles.ViewModels
 
         public ICommand LoadFileCommand => new Command(
             async () => {
-                FileContents = await fileService.LoadText("mysavedfile.txt");
+                FileContents = await _fileService.LoadText("mysavedfile.txt");
             }
         );
 
         public ICommand SaveFileCommand => new Command(
             async () => {
-                await fileService.SaveText("mysavedfile.txt", FileContents);
+                await _fileService.SaveText("mysavedfile.txt", FileContents);
             }
         );
 
