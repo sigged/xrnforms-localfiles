@@ -14,51 +14,51 @@ namespace XrnCourse.LocalFiles.ViewModels
     public class PluginExampleViewModel : FreshBasePageModel
     {
         
-        private string coffeeName;
+        private string _coffeeName;
         public string CoffeeName
         {
-            get { return coffeeName; }
+            get => _coffeeName;
             set
             {
-                coffeeName = value;
+                _coffeeName = value;
                 RaisePropertyChanged(nameof(CoffeeName));
             }
         }
 
-        private bool hasSugar;
+        private bool _hasSugar;
         public bool HasSugar
         {
-            get { return hasSugar; }
+            get => _hasSugar;
             set
             {
-                hasSugar = value;
+                _hasSugar = value;
                 RaisePropertyChanged(nameof(HasSugar));
             }
         }
 
-        private int milkAmount;
+        private int _milkAmount;
         public int MilkAmount
         {
-            get { return milkAmount; }
+            get => _milkAmount;
             set
             {
-                milkAmount = value;
+                _milkAmount = value;
                 RaisePropertyChanged(nameof(MilkAmount));
             }
         }
 
-        private TimeSpan brewTime;
+        private TimeSpan _brewTime;
         public TimeSpan BrewTime
         {
-            get { return brewTime; }
+            get => _brewTime;
             set
             {
-                brewTime = value;
+                _brewTime = value;
                 RaisePropertyChanged(nameof(BrewTime));
             }
         }
 
-        protected async override void ViewIsAppearing(object sender, EventArgs e)
+        protected override async void ViewIsAppearing(object sender, EventArgs e)
         {
             base.ViewIsAppearing(sender, e);
 
@@ -77,10 +77,10 @@ namespace XrnCourse.LocalFiles.ViewModels
                         var serializer = new XmlSerializer(typeof(CoffeeSettings));
                         CoffeeSettings settings = (CoffeeSettings)serializer.Deserialize(reader);
 
-                        this.CoffeeName = settings.CoffeeName;
-                        this.HasSugar = settings.HasSugar;
-                        this.MilkAmount = settings.MilkAmount;
-                        this.BrewTime = settings.BrewTime;
+                        CoffeeName = settings.CoffeeName;
+                        HasSugar = settings.HasSugar;
+                        MilkAmount = settings.MilkAmount;
+                        BrewTime = settings.BrewTime;
                     }
                 }
                 catch(Exception ex)
@@ -104,15 +104,15 @@ namespace XrnCourse.LocalFiles.ViewModels
             async () => {
                 var settings = new CoffeeSettings
                 {
-                    CoffeeName = this.CoffeeName,
-                    HasSugar = this.HasSugar,
-                    MilkAmount = this.milkAmount,
-                    BrewTime = this.BrewTime
+                    CoffeeName = CoffeeName,
+                    HasSugar = HasSugar,
+                    MilkAmount = _milkAmount,
+                    BrewTime = BrewTime
                 };
                 
                 //saving settings to XML file
                 var serializer = new XmlSerializer(typeof(CoffeeSettings));
-                string settingsAsXml = "";
+                string settingsAsXml;
                 using (var stringWriter = new StringWriter())
                     using (var writer = XmlWriter.Create(stringWriter))
                     {

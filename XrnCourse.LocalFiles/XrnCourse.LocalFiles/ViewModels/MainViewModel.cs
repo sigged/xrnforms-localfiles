@@ -8,19 +8,19 @@ namespace XrnCourse.LocalFiles.ViewModels
     {
         public ICommand OpenEmbeddedFilePageCommand => new Command(
             async () => {
-                await CoreMethods.PushPageModel<EmbeddedFileViewModel>(true);
+                await CoreMethods.PushPageModel<EmbeddedFileViewModel>();
             }
         );
 
         public ICommand OpenSaveAndLoadPageCommand => new Command(
             async () => {
-                await CoreMethods.PushPageModel<SaveAndLoadViewModel>(true);
+                await CoreMethods.PushPageModel<SaveAndLoadViewModel>();
             }
         );
 
         public ICommand OpenPluginPageCommand => new Command(
             async () => {
-                await CoreMethods.PushPageModel<PluginExampleViewModel>(true);
+                await CoreMethods.PushPageModel<PluginExampleViewModel>();
             }
         );
     }

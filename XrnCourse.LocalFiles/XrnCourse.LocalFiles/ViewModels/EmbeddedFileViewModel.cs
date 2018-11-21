@@ -8,14 +8,14 @@ namespace XrnCourse.LocalFiles.ViewModels
 {
     public class EmbeddedFileViewModel : FreshBasePageModel
     {
-        private string fileContents;
+        private string _fileContents;
 
         public string FileContents
         {
-            get { return fileContents; }
+            get => _fileContents;
             set {
-                fileContents = value;
-                this.RaisePropertyChanged(nameof(FileContents));
+                _fileContents = value;
+                RaisePropertyChanged(nameof(FileContents));
             }
         }
 

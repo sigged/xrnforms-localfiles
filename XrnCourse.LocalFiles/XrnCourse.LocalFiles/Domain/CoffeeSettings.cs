@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace XrnCourse.LocalFiles.Domain
@@ -20,12 +16,8 @@ namespace XrnCourse.LocalFiles.Domain
         //helps serializing the TimeSpan to XML
         public string BrewTimeAsString
         {
-            get {
-                return BrewTime.ToString("hhmm");
-            }
-            set {
-                BrewTime = TimeSpan.ParseExact(value, "hhmm", CultureInfo.InvariantCulture);
-            }
+            get => BrewTime.ToString("hhmm");
+            set => BrewTime = TimeSpan.ParseExact(value, "hhmm", CultureInfo.InvariantCulture);
         }
     }
 }
